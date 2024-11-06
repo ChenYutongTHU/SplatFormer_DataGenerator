@@ -14,8 +14,8 @@ tar -xvf blender-3.2.2-linux-x64
 ```
 ### nerfstudio (for 3DGS training)
 ```
-git clone git@github.com:ChenYutongTHU/nerfstudio_splatformer.git
-#TODO
+cd nerfstudio
+pip install -e .
 ```
 
 ## 2. Rendering 3D Scenes
@@ -105,7 +105,6 @@ blender-3.2.2-linux-x64/blender --background --python render.py \
     --test_num_per_floor=3 \
     --test_elevation_range=70-90 \
     --use_gpu
-done
 ```
 
 ## 3. Train 3DGS on the OOD scenes

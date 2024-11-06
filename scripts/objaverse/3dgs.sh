@@ -8,7 +8,7 @@ ns-train splatfacto \
         --logging.local-writer.enable=False --logging.profiler=none \
         --pipeline.datamanager.data=${colmap_dir} \
         --pipeline.model.sh_degree=1 \
-        --pipeline.save_img=True --test_after_train False \
+        --pipeline.save_img=True --test_after_train True \
         --output_dir=./ --experiment-name=${output_dir} \
         --relative-model-dir=nerfstudio_models  --vis wandb \
         --steps_per_eval_image=100000 --steps_per_eval_all_images=1000000 --max_num_iterations=30000 \
