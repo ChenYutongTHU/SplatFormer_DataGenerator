@@ -917,6 +917,11 @@ if __name__ == "__main__":
         action='store_true' #For shapenet
     )
     
+    parser.add_argument(
+        '--use_gpu',
+        action='store_true'
+    )
+
     argv = sys.argv[sys.argv.index("--") + 1 :]
     args = parser.parse_args(argv)
 
@@ -933,7 +938,7 @@ if __name__ == "__main__":
     render.resolution_percentage = 100
 
     # Set cycles settings
-    scene.cycles.device = "GPU"
+    scene.cycles.device = "GPU" if args.use_gpu else "CPU"
     if args.object_path.endswith(".blend"):
         scene.cycles.samples = 1024
     else:

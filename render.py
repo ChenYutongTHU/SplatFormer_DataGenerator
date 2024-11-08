@@ -996,22 +996,6 @@ def render_object(
     random.seed(ord(os.path.basename(object_file).split('.')[0][-1]))
     random_offset = np.random.randint(0, args.train_elevation_sin_frequency)
 
-    #For v5 we need to decide the distance first
-    # train_distances = []
-    # for i in range(0, 32):
-    #     stepsize = 360.0 / 32 #Emulate the train distance of v4
-    #     #compute distances
-    #     rotation_euler = deepcopy(obj_.rotation_euler)
-    #     rotation_euler[0], rotation_euler[1], rotation_euler[2] = 0,0,0
-    #     rotation_euler[2] -= i*math.radians(stepsize)
-    #     bbox_min, bbox_max = scene_bbox(force_matrix = rotation_euler.to_matrix())
-    #     object_radius = max(abs(bbox_max[0]), abs(bbox_min[0]), abs(bbox_max[2]), abs(bbox_min[2])) #x,z (The object is center)
-    #     # object_radius = (bbox_max[0] - bbox_min[0]) / 2
-    #     tan_fov_half = 0.5*cam.data.sensor_width / cam.data.lens
-    #     distance = object_radius/ tan_fov_half
-    #     cam.location = (0,distance, 0)  
-    #     train_distances.append(distance)
-    # distance = np.mean(train_distances)
     distance = args.distance
     if os.path.basename(object_file).split('.')[0] == '40b3fcc83e354193906ef2d05a48a2e7':
         distance = 4.0
@@ -1097,32 +1081,6 @@ def render_object(
                 cam_empty.rotation_euler[2] += math.radians(stepsize) #for the next view
             elif split=='test' and i%len(elevations)==len(elevations)-1:
                 cam_empty.rotation_euler[2] += math.radians(stepsize)
-            #read the first image
-            if True and i==0 and 'train' in split:
-                if args.generate_trainset:
-                    file_path = os.path.join(os.path.abspath(args.output_folder),'images','train_000.png')
-                else:
-                    file_path = os.path.join(os.path.abspath(args.output_folder),split.split('_')[-1],'images','train_000.png')
-                if load_image_and_check(file_path)==False:
-                    import shutil
-                    print(args.output_folder)
-                    shutil.rmtree(os.path.abspath(args.output_folder))
-                    exit()
-                # print(img)
-                # import cv2
-                # from PIL import Image #No module named PIL, let's disable first
-                # img = Image.open(os.path.join(os.path.abspath(args.output_folder),'images',split+'_000.png'))
-                # _, _, _, alpha = img.split()  # Get the alpha channel
-                # # Convert the alpha channel to a NumPy array
-                # alpha = np.array(alpha)
-                # if np.sum(alpha)<(256*256/4): #have to take up at least 1/4 of the image
-                #     print(f"The object is too small, discard")
-                #     #delete the folder
-                #     import shutil
-                #     print(args.output_folder)
-                #     f_images.close()
-                #     shutil.rmtree(os.path.abspath(args.output_folder))
-                #     exit()
 
     if not args.generate_trainset:
         for key, lines in f_images_lines.items():
@@ -1220,6 +1178,11 @@ if __name__ == "__main__":
         "--generate_trainset",
         action='store_true'
     )
+
+    parser.add_argument(
+        "--use_gpu",
+        action='store_true'
+    )
     
     argv = sys.argv[sys.argv.index("--") + 1 :]
     args = parser.parse_args(argv)
@@ -1237,7 +1200,7 @@ if __name__ == "__main__":
     render.resolution_percentage = 100
 
     # Set cycles settings
-    scene.cycles.device = "GPU"
+    scene.cycles.device = "GPU" if args.use_gpu else "CPU"
     if args.object_path.endswith(".blend"):
         scene.cycles.samples = 1024
     else:
