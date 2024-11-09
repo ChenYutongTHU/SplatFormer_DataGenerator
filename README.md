@@ -1,8 +1,8 @@
 # SplatFormer-OOD-BlenderRender
-This repository is used by [SplatFormer]() to generate OOD data. It contains 
+This repository is used by [SplatFormer](https://github.com/ChenYutongTHU/SplatFormer) to generate OOD data. It contains 
 * The blender rendering scripts to render OOD-NVS test and training set. 
 * The nerfstudio script to train 3DGS on the rendered OOD-NVS sets.
-You can also download **the prepared test set** [here](). 
+You can also download **the prepared test set** [here](https://drive.google.com/file/d/1-mUCl-yxe1aE0rrQDHKlXk1J2n8d1-60/view?usp=sharing). 
 
 ## 1. Installation
 ### Blender (for render)
@@ -93,7 +93,7 @@ blender-3.2.2-linux-x64/blender --background --python render.py \
 
 ### Google Scanned Objects
 #### Download
-Download [google scanned objects](https://app.gazebosim.org/GoogleResearch/fuel/collections/Scanned%20Objects%20by%20Google%20Research) and extract the files. We choose 20 objects and their names are listed in [traintest_splits/gso_test.txt](traintest_splits/gso_test.txt). You can also download them [here]().
+Download [google scanned objects](https://app.gazebosim.org/GoogleResearch/fuel/collections/Scanned%20Objects%20by%20Google%20Research) and extract the files. We choose 20 objects and their names are listed in [traintest_splits/gso_test.txt](traintest_splits/gso_test.txt).
 
 #### Render Test set
 ```
